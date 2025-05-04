@@ -14,7 +14,7 @@ from sqlalchemy import func, select
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
 
-from hangspot.models import (
+from models import (
     User,
     base_url,
     db,
@@ -517,4 +517,4 @@ def like_post(update_id, type):
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
+    app.run(host='0.0.0.0', port=5000)

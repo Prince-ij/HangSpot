@@ -3,3 +3,4 @@ sqlalchemy
 python-dotenv
 flask-login
 flask-migrate
+gunicorn
