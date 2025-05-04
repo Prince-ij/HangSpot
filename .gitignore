@@ -1,0 +1,11 @@
+*.pyc
+__pycache__
+*.db
+.venv
+.pytest_cache
+*log
+.vscode
+.env
+.ruff_cache
+data.db-journal
+migrations

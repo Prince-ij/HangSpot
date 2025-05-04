@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+    <title>HANGSPOT</title>
+</head>
+<body>
+    <div class="container">
+        <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+          <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+            <img class="bi me-2" width="40" height="42" aria-hidden="true" src="../static/images/H.png">
+            <span class="fs-4">HangSpot</span>
+          </a>
+
+          <ul class="nav nav-pills">
+            <li class="nav-item"><a href="{{ url_for('home') }}" class="nav-link active" aria-current="page">Home</a></li>
+            <li class="nav-item"><a href="{{ url_for('choose_update') }}" class="nav-link">Suggest Places</a></li>
+            {% if not user.is_active %}
+            <li class="nav-item"><a href="{{ url_for('register') }}" class="nav-link">Join Community</a></li>
+            {% endif %}
+            {% if user.is_active %}
+            <li class="nav-item"><a href="{{ url_for('profile') }}" class="nav-link">Profile</a></li>
+            {% else %}
+            <li class="nav-item"><a href="{{ url_for('login') }}" class="nav-link">Login</a></li>
+            {% endif %}
+
+          </ul>
+        </header>
+      </div>
+
+      <div class="px-4 py-5 my-5 text-center">
+        <img class="d-block mx-auto mb-4" src="../static/images/H.png" alt="" width="100" height="77">
+        <h1 class="display-5 fw-bold text-body-emphasis">HangSpot</h1>
+        <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4">HangSpot is the number one place to find chill and cool places, Wifi Spots and more. You see updates from other users, you also share updates with others. Have you recently visited somewhere amazing or probably found a place with free and strong wifi.</p>
+          <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            <a href="{{ url_for('choose_update') }}" class="text-decoration-none"><button type="button" class="btn btn-outline-secondary btn-lg px-4">Share the Update</button></a>
+
+          </div>
+        </div>
+      </div>
+
+        <div class="container-fluid row">
+          <div class="row align-items-start">
+          <p class="col-2 text-body-secondary mb-5 ">Filter By: </p>
+          <select class="form-select col" aria-label="Default select example" id="updateSelect" onchange="redirectToUpdate(this)">
+            <option value="{{ url_for('home') }}">All</option>
+            <option value="{{ url_for('update_on_type', type='hg') }}">HangOut</option>
+            <option value="{{ url_for('update_on_type', type='Wifi') }}">WiFI</option>
+            <option value="{{ url_for('home') }}">All</option>
+          </select>
+          </div>
+
+        </div>
+        <script>
+          function redirectToUpdate(select) {
+            const url = select.value;
+            if (url) {
+              window.location.href = url;
+            }
+          }
+
+
+        </script>
+
+
+        {% for update in updates %}
+        <div class="row g-0 border rounded overflow-hidden flex-md-row  shadow-sm h-md-250 position-relative">
+          <div class="col-auto  d-lg-block">
+              <img class="bd-placeholder-img img-responsive" width="300" height="250" src="{{ update.image }}" role="img"  preserveAspectRatio="xMidYMid slice">
+            </div>
+          <div class="col p-4 d-flex flex-column position-static">
+            <strong class="d-inline-block mb-2 text-primary-emphasis">{{ update.type}}</strong>
+            <h3 class="mb-0">{{ update.name }}</h3>
+            <div class="mb-1 text-body-secondary">{{ update.opening_time }} - {{ update.closing_time }}</div>
+            <div class="mb-1 text-body-secondary">{{ update.available_days }}</div>
+            <p class="card-text mb-auto">{{ update.description }}</p>
+            {% if update.type == 'Wifi' %}
+            <p class="card-text mb-auto">Wifi Strength: 100mb/s</p>
+            {% endif %}
+            <p class="text-primary">
+             @{{ update.address }}
+            </p>
+            <div class="row">
+              <p class="card-text mb-auto col-md-5">BY {{ update.updater }}</p> <b>{{ update.likes_count }} Likes
+                <i class="fas fa-solid fa-thumbs-up"></i>
+              </b>
+              {% if user.is_active %}
+              <button class="btn btn-primary col-md-2 my-2"><a class="text-decoration-none text-white" href="{{ url_for('like_post', update_id=update.id, type=update.type) }}">Like Update</a></button>
+              {% endif %}
+            </div>
+
+          </div>
+          {% endfor %}
+
+      <nav aria-label="Page Navigation">
+        <ul class="pagination">
+          {% if page > 1 %}
+          <li class="page-item disabled">
+            <a class="page-link" href="{{ url_for('home', page=page-1) }}">Previous</a>
+          </li>
+          {% endif %}
+
+          {% for p in range(1, total_pages + 1) %}
+          <li class="page-item {% if p == page %}active{% endif %}">
+            <a class="page-link" href="{{ url_for('home', page=p) }}">{{ p }}</a>
+          </li>
+          {% endfor %}
+
+          {% if page < total_pages %}
+          <li class="page-item">
+            <a class="page-link" href="{{ url_for('home', page=page+1) }}">Next</a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+    <title>HangOut Update</title>
+</head>
+<body>
+  <div class="row py-lg-5">
+    <div class="col-lg-6 col-md-8 mx-auto">
+      {% if is_edit: %}
+    <h1 class="text-primary-emphasis mx-5 my-4">Edit hangout Update</h1>
+    <form class="form-control" action="{{ url_for('edit', type='hangout', update_id=update.id) }}" method="post" enctype="multipart/form-data">
+    {% else %}
+    <h1 class="text-primary-emphasis mx-5 my-4">Drop hangout Update</h1>
+    <form class="form-control" action="{{ url_for('update', type='hangout') }}" method="post" enctype="multipart/form-data">
+    {% endif %}
+
+
+
+        <div class="form-floating">
+          <input type="text" class="form-control mb-2" id="username" name="name" value="{% if is_edit: %} {{ update.name }}{% endif %}">
+          <label for="floatingInput">Location Name</label>
+        </div>
+
+        <div class="form-floating">
+          <input type="text" class="form-control mb-2" id="floatingInput" name="address" value="{% if is_edit: %} {{ update.address }}{% endif %}">
+          <label for="floatingInput">Location address</label>
+        </div>
+
+        <p class="my-2 text-body-secondary">Available Days</p>
+        <div class="form-check mt-3">
+          <input class="form-check-input" type="checkbox" name="MON" id="MON" value="MON">
+          <label class="form-check-label" for="MON">
+            MON
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="TUE" id="TUE" value="TUE">
+          <label class="form-check-label" for="TUE">
+            TUE
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="WED" id="WED" value="WED">
+          <label class="form-check-label" for="WED">
+            WED
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="THU" id="THU" value="THU">
+          <label class="form-check-label" for="THU">
+            THU
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="FRI" id="FRI", value="FRI">
+          <label class="form-check-label" for="FRI">
+            FRI
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="SAT" id="SAT", value="SAT">
+          <label class="form-check-label" for="SAT">
+            SAT
+          </label>
+        </div>
+        <div class="form-check mb-3">
+          <input class="form-check-input" type="checkbox" name="SUN" id="SUN", value="SUN">
+          <label class="form-check-label" for="SUN">
+            SUN
+          </label>
+        </div>
+
+        <div class="form-floating">
+          <input type="time" class="form-control mb-2" id="floatingPassword" name="opening time">
+          <label for="floatingPassword">Opening time</label>
+        </div>
+        <div class="form-floating">
+            <input type="time" class="form-control mb-2" id="floatingPassword" name="closing time">
+            <label for="floatingPassword">Closing time</label>
+          </div>
+
+
+          <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+            <textarea class="form-control"  name="description" id="exampleFormControlTextarea1" rows="3" maxlength="150" value="{% if is_edit: %}{{ update.description }} {% endif %}"></textarea>
+          </div>
+
+          <label for="image" class="form-label">Upload Image</label><br/>
+
+          <input id="image"  type="file" name="image" aria-required="false" class="">
+
+
+        <button class="btn btn-primary w-100 py-2 my-3" type="submit">Drop Update</button>
+      </form>
+</div>
+</div>
+    <p class="mt-5 mb-3 text-body-secondary">©2025</p>
+
+</body>
+</html>
